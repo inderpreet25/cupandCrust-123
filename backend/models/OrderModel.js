@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
@@ -8,10 +8,11 @@ const orderSchema = new mongoose.Schema({
       title: String,
       price: Number,
       quantity: Number,
+      image: String
     }
   ],
   total: { type: Number, required: true },
-  date: { type: Date, default: Date.now }, // backend handles date automatically
+  date: { type: Date, default: Date.now },
 });
 
-export default mongoose.model("Order", orderSchema);
+module.exports = mongoose.model("Order", orderSchema);

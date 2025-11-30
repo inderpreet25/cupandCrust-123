@@ -1,20 +1,26 @@
-import Order from "../models/Order.js";
+const Order = require("../models/OrderModel");
 
-export const addOrder = async (req, res) => {
+exports.createOrder = async (req, res) => {
   try {
-    const order = new Order(req.body);
-    await order.save();
-    res.json({ success: true, message: "Order Saved" });
-  } catch (error) {
-    res.status(500).json({ error: "Server Error" });
+    const { userId, items, total } = req.body;
+
+    if (!userId || !items.length)
+      return res.status(400).json({ message: "Invalid order data" });
+
+    const newOrder = new Order({ userId, items, total });
+    await newOrder.save();
+
+    res.json({ message: "Order created", order: newOrder });
+  } catch (err) {
+    res.status(500).json({ error: err });
   }
 };
 
-export const getOrders = async (req, res) => {
+exports.getOrders = async (req, res) => {
   try {
-    const orders = await Order.find().sort({ date: -1 });
+    const orders = await Order.find({ userId: req.params.userId }).sort({ date: -1 });
     res.json(orders);
-  } catch (error) {
-    res.status(500).json({ error: "Server Error" });
+  } catch (err) {
+    res.status(500).json({ error: err });
   }
 };

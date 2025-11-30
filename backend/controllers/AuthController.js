@@ -1,60 +1,47 @@
-const userModel = require("../models/UserModel"); // no .js needed
-const bcrypt = require("bcrypt");
+const User = require("../models/UserModel");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const signup = async (req, res) => {
+// REGISTER
+exports.register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { username, email, password } = req.body;
 
-    const exist = await userModel.findOne({ email });
-    if (exist) return res.json({ message: "User already exists" });
+    const exist = await User.findOne({ email });
+    if (exist) return res.status(400).json({ message: "User already exists" });
 
-    const hashed = await bcrypt.hash(password, 10);
+    const hashedPass = await bcrypt.hash(password, 10);
 
-    const newUser = new userModel({
-      name,
-      email,
-      password: hashed,
-    });
-
+    const newUser = new User({ username, email, password: hashedPass });
     await newUser.save();
 
-    return res.json({
-      message: "Signup successful",
-      user: {
-        _id: newUser._id,
-        name: newUser.name,
-        email: newUser.email,
-      },
-    });
+    res.status(201).json({ message: "Registration successful" });
   } catch (err) {
-    console.log("Signup Error:", err);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ error: err });
   }
 };
 
-const login = async (req, res) => {
+// LOGIN
+exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await userModel.findOne({ email });
-    if (!user) return res.json({ message: "Invalid Email or Password" });
+    const user = await User.findOne({ email });
+    if (!user) return res.status(400).json({ message: "Invalid email" });
 
-    const passMatch = await bcrypt.compare(password, user.password);
-    if (!passMatch) return res.json({ message: "Invalid Email or Password" });
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(400).json({ message: "Wrong password" });
 
-    return res.json({
-      message: "Login successful",
-      user: {
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-      },
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+
+    res.json({
+      message: "Login success",
+      userId: user._id,
+      username: user.username,
+      token
     });
+
   } catch (err) {
-    console.log("Login Error:", err);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ error: err });
   }
 };
-
-module.exports = { signup, login };

@@ -6,24 +6,20 @@ const connectDB = require("./config/db");
 
 // Routers
 const AuthRouter = require("./routes/AuthRouter");
+const OrderRouter = require("./routes/OrderRouter");
 
-// Middlewares
 app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 app.use(express.json());
 
 // Routes
 app.use("/auth", AuthRouter);
+app.use("/api/orders", OrderRouter);
 
-// Test Route
 app.get("/", (req, res) => {
-  res.send("Backend is running...");
+  res.send("Backend running");
 });
 
-// Connect Database
 connectDB();
 
-// Start Server
 const PORT = 8080;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server running on ${PORT}`));
