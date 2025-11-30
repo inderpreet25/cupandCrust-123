@@ -1,0 +1,26 @@
+.pizza-page {
+  padding: 40px;
+  text-align: center;
+}
+
+.pizza-page h2 {
+  margin-bottom: 30px;
+  color: #6b4226;
+  font-size: 28px;
+}
+
+.pizza-grid {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+
+/* ✅ Price styling (reusable for pizza cards) */
+.category-card .price {
+  font-size: 16px;
+  font-weight: bold;
+  color: #d32f2f; /* red tone for pizza price */
+  margin-bottom: 15px;
+  display: block;
+}

@@ -1,0 +1,17 @@
+.coffee-page {
+  padding: 40px;
+  text-align: center;
+}
+
+.coffee-page h2 {
+  margin-bottom: 30px;
+  color: #6b4226;
+  font-size: 28px;
+}
+
+.coffee-grid {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  flex-wrap: wrap;
+}

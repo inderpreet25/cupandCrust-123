@@ -1,0 +1,117 @@
+.home-page {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+/* Hero Banner */
+.home-hero {
+  position: relative;
+  width: 100%;
+  height: 80vh;
+  background-size: cover;
+  background-position: center;
+}
+
+.hero-overlay {
+  background: rgba(0, 0, 0, 0.4);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-text {
+  text-align: center;
+  color: #fff;
+}
+
+.hero-text h1 {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.hero-text p {
+  font-size: 20px;
+  margin-bottom: 30px;
+}
+
+.hero-btn {
+  padding: 12px 30px;
+  background-color: #FFA500;
+  color: #000;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.hero-btn:hover {
+  background-color: #0D1B2A;
+  color: #fff;
+}
+
+/* Sections */
+.home-sections {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  padding: 60px 20px;
+  flex-wrap: wrap;
+}
+
+.home-section {
+  width: 300px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.section-img {
+  width: 100%;
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 12px;
+  transition: transform 0.3s ease;
+}
+
+.home-section:hover .section-img {
+  transform: scale(1.05);
+}
+
+.section-text {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.section-text h2 {
+  font-size: 24px;
+  margin-bottom: 8px;
+  color: #0D1B2A;
+}
+
+.section-text p {
+  font-size: 15px;
+  color: #555;
+}
+
+/* About / Feature Section */
+.home-about {
+  max-width: 800px;
+  margin: 60px auto;
+  padding: 0 20px;
+  text-align: center;
+}
+
+.home-about h2 {
+  font-size: 32px;
+  margin-bottom: 20px;
+  color: #FFA500;
+}
+
+.home-about p {
+  font-size: 17px;
+  line-height: 1.6;
+  color: #444;
+}
