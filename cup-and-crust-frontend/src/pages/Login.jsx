@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../pages/Auth.css";
+import axios from "axios";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -11,30 +12,29 @@ function Login() {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+      // send request to backend
+      const res = await axios.post("http://localhost:8080/auth/login", {
+        email,
+        password,
       });
 
-      const data = await res.json();
+      const { message, success, jwtToken, email: serverEmail, name } = res.data;
 
-      if (data.message === "Login successful") {
-        const user = {
-          _id: data.user._id,
-          name: data.user.name,
-          email: data.user.email,
-        };
 
-        localStorage.setItem("user", JSON.stringify(user));
+      if (success) {
+        // store token & user data in localStorage
+        localStorage.setItem("token", jwtToken);
+        localStorage.setItem("email", serverEmail);
+        localStorage.setItem("loggedInUser", name);
+        alert(message || "✅ Login successful!");
 
-        alert("Login Successful!");
+        // redirect to homepage or dashboard
         navigate("/");
-      } else {
-        alert(data.message);
+
       }
     } catch (err) {
-      alert("Backend not running!");
+      console.log(err);
+      alert("❌ Login failed — try again.");
     }
   };
 

@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../pages/Auth.css";
 import bgImg from "../assets/bg.jpg";
+import axios from "axios";
+
 
 function Signup() {
   const [name, setName] = useState("");
@@ -19,23 +21,19 @@ function Signup() {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
-      });
 
-      const data = await res.json();
+      const res = await axios.post("http://localhost:8080/auth/signup", { name, email, password });
+      alert(res.data.msg || "✅ Signup successful!");
+      navigate("/login"); // redirect to login page
+      console.log("User Registered:", res.data.user);
 
-      if (data.message === "Signup successful") {
-        alert("Signup Successful! Please login now.");
-        navigate("/login");
-      } else {
-        alert(data.message);
-      }
+
     } catch (err) {
-      console.error("Signup error:", err);
-      alert("Backend not running!");
+      const errorDetailsObj = err.response.data.error.details[0];
+      console.error(errorDetailsObj);
+      const alertMsg = Object.values(errorDetailsObj)[0];
+
+      alert(alertMsg || "❌ Signup failed — try again.");
     }
   };
 
