@@ -5,25 +5,18 @@ import Logo from "../assets/logo.jpg";
 import { useCart } from "../context/CartContext";
 
 function Navbar() {
-  const navigate = useNavigate();
   const { cartItems } = useCart();
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [username, setUsername] = useState("");
-
-  useEffect(() => {
-    const user = localStorage.getItem("username");
-    if (user) {
-      setIsLoggedIn(true);
-      setUsername(user);
-    }
-  }, []);
+  const navigate = useNavigate();
+  const loggedInUser = localStorage.getItem("loggedInUser"); // check login state
 
   const handleLogout = () => {
-    localStorage.removeItem("username");
-    setIsLoggedIn(false);
+    localStorage.removeItem("token");
+    localStorage.removeItem("loggedInUser");
+    localStorage.removeItem("email");
     navigate("/login");
   };
+
+
 
   return (
     <nav className="navbar">
@@ -45,19 +38,23 @@ function Navbar() {
       {/* AUTH + CART + ORDERS */}
       <div className="navbar-auth">
 
-        {/* ⭐ FIXED MY ORDERS BUTTON */}
-        <Link to="/myorders" className="btn">
-          My Orders
-        </Link>
 
-        {/* CART BUTTON */}
-        <Link to="/cart" className="btn cart-btn">
-          🛒 Cart ({cartItems.length})
-        </Link>
-
-        {isLoggedIn ? (
+        {loggedInUser && (
           <>
-            <span className="welcome">Hey, {username}</span>
+            <Link to="/myorders" className="btn">
+              My Orders
+            </Link>
+
+            <Link to="/cart" className="btn cart-btn">
+              🛒 Cart ({(cartItems || []).length})
+            </Link>
+          </>
+        )}
+
+
+        {loggedInUser ? (
+          <>
+            <span className="welcome">Hey, {loggedInUser}</span>
             <button className="btn" onClick={handleLogout}>Logout</button>
           </>
         ) : (
@@ -66,6 +63,12 @@ function Navbar() {
             <Link to="/signup" className="btn">Signup</Link>
           </>
         )}
+
+
+
+
+
+
       </div>
     </nav>
   );
