@@ -3,12 +3,25 @@ import "./Cart.css";
 import { useCart } from "../context/CartContext";
 import { Link, useNavigate } from "react-router-dom";
 import AddressModal from "../components/AddressModal";
+import axios from "axios";
 
 export default function Cart() {
   const { cartItems, updateQuantity, removeFromCart, totalPrice, clearCart } = useCart();
   const navigate = useNavigate();
 
   const [showAddress, setShowAddress] = useState(false);
+  const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:8080";
+
+function getAuthHeaders() {
+  const token = localStorage.getItem("token"); // optional JWT
+  return token ? token : console.log("No Token Found");
+  ;
+}
+
+ const api = axios.create({
+    baseURL: API_BASE,
+    headers: { Authorization: getAuthHeaders() },
+  });
 
   // OPEN ADDRESS MODAL
   const handlePlaceOrder = () => {
@@ -36,16 +49,7 @@ export default function Cart() {
     };
 
     try {
-      const res = await fetch("http://localhost:8080/orders/create", {
-        method: "POST",
-        headers: { 
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
-        body: JSON.stringify(orderData),
-      });
-
-      const data = await res.json();
+      const res = api.post("")
 
       if (res.ok) {
         alert("Order placed successfully!");
