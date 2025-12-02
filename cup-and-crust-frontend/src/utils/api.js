@@ -1,11 +1,19 @@
-const BASE_URL = "http://localhost:5000/api";
+import axios from "axios";
 
-export async function placeOrder(orderData) {
-  const res = await fetch(`${BASE_URL}/orders`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(orderData),
-  });
 
-  return res.json();
+const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:8080";
+
+
+function getAuthHeaders() {
+  const token = localStorage.getItem("token");
+  return token ? token : console.log("No Token Found");
+  ;
 }
+
+
+export const api = axios.create({
+  baseURL: API_BASE,
+  headers: { Authorization: getAuthHeaders() },
+});
+
+

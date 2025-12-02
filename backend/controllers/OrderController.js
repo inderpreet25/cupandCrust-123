@@ -1,5 +1,4 @@
 const OrderModel = require("../models/OrderModel");
-const userModel = require("../models/UserModel");
 const jwt = require("jsonwebtoken");
 
 
@@ -21,7 +20,7 @@ exports.createOrder = async (req, res) => {
 
     await newOrder.save();
 
-    return res.json({ message: "Order created successfully", order: newOrder });
+    return res.status(201).json({ message: "Order created successfully", order: newOrder });
   } catch (err) {
     console.log(err);
 
@@ -32,8 +31,9 @@ exports.createOrder = async (req, res) => {
 // Get My Orders
 exports.getOrders = async (req, res) => {
   try {
-    const orders = await Order.find({ userId: req.userId }).sort({ date: -1 });
-    res.json(orders);
+    const orders = await OrderModel.find({ userId: req.user._id }).sort({ date: -1 });
+
+    res.status(200).json(orders);
   } catch (err) {
     res.status(500).json({ error: err });
   }

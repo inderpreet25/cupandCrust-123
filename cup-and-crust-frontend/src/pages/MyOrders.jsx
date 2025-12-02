@@ -1,24 +1,28 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./MyOrders.css";
+import { useNavigate } from "react-router-dom";
+import { api } from "../utils/api";
 
 function MyOrders() {
   const [orders, setOrders] = useState([]);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const token = localStorage.getItem("token"); // JWT token from login
-        if (!token) return;
+        const token = localStorage.getItem("token");
 
-        const res = await fetch("http://localhost:8080/orders/myorders", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        if (!token) {
+          alert("Please login to place an order.");
+          navigate("/login");
+          return;
+        }
 
-        if (res.ok) {
-          const data = await res.json();
-          setOrders(data);
+        const res = await api.get("/orders")
+
+        if (res.status === 200) {
+          setOrders(res.data);
         } else {
           const data = await res.json();
           alert(data.message || "Failed to fetch orders");
