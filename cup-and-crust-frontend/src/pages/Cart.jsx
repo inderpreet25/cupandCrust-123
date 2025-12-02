@@ -12,13 +12,13 @@ export default function Cart() {
   const [showAddress, setShowAddress] = useState(false);
   const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:8080";
 
-function getAuthHeaders() {
-  const token = localStorage.getItem("token"); // optional JWT
-  return token ? token : console.log("No Token Found");
-  ;
-}
+  function getAuthHeaders() {
+    const token = localStorage.getItem("token"); // optional JWT
+    return token ? token : console.log("No Token Found");
+    ;
+  }
 
- const api = axios.create({
+  const api = axios.create({
     baseURL: API_BASE,
     headers: { Authorization: getAuthHeaders() },
   });
@@ -38,10 +38,8 @@ function getAuthHeaders() {
 
   // FINAL ORDER SUBMIT TO BACKEND
   const submitOrder = async (address) => {
-    const userId = localStorage.getItem("loggedInUser");
 
     const orderData = {
-      userId,
       items: cartItems,
       total: totalPrice,
       address: address,
@@ -49,14 +47,14 @@ function getAuthHeaders() {
     };
 
     try {
-      const res = api.post("")
+      const res = api.post("/orders/create", orderData)
 
       if (res.ok) {
         alert("Order placed successfully!");
         clearCart();
         navigate("/myorders");
       } else {
-        alert(data.message || "Something went wrong");
+        // alert(data.message || "Something went wrong");
       }
     } catch (error) {
       console.log("Order error:", error);

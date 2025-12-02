@@ -1,22 +1,7 @@
-const Order = require("../models/OrderModel");
-const User = require("../models/UserModel");
+const OrderModel = require("../models/OrderModel");
+const userModel = require("../models/UserModel");
 const jwt = require("jsonwebtoken");
 
-// Auth middleware
-exports.authMiddleware = async (req, res, next) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader)
-    return res.status(401).json({ message: "Login first" });
-
-  const token = authHeader.split(" ")[1]; // Bearer <token>
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.userId = decoded.id; // user id
-    next();
-  } catch (err) {
-    return res.status(401).json({ message: "Invalid token" });
-  }
-};
 
 // Create Order
 exports.createOrder = async (req, res) => {
@@ -26,8 +11,8 @@ exports.createOrder = async (req, res) => {
     if (!items?.length)
       return res.status(400).json({ message: "Cart is empty" });
 
-    const newOrder = new Order({
-      userId: req.userId,
+    const newOrder = new OrderModel({
+      userId: req.user._id,
       items,
       total,
       address,
@@ -35,8 +20,11 @@ exports.createOrder = async (req, res) => {
     });
 
     await newOrder.save();
+
     return res.json({ message: "Order created successfully", order: newOrder });
   } catch (err) {
+    console.log(err);
+
     return res.status(500).json({ error: err });
   }
 };
@@ -50,3 +38,5 @@ exports.getOrders = async (req, res) => {
     res.status(500).json({ error: err });
   }
 };
+
+
