@@ -1,0 +1,91 @@
+/* Background Overlay */
+.address-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5000;
+}
+
+/* Modal Box */
+.address-modal-box {
+  background: #fff8e6;     /* light beige theme (same as your cart bg) */
+  padding: 25px;
+  border-radius: 12px;
+  width: 360px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  animation: popup 0.25s ease;
+}
+
+/* Animation */
+@keyframes popup {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Heading */
+.address-modal-box h2 {
+  text-align: center;
+  margin-bottom: 15px;
+  color: #6b4f34;    /* soft brown – matches navbar text */
+  font-weight: bold;
+}
+
+/* Input Fields */
+.address-modal-box input {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  border: 1px solid #d3c5ac;
+  border-radius: 8px;
+  font-size: 14px;
+  background: #fff;
+}
+
+.address-modal-box input:focus {
+  outline: none;
+  border-color: #b89363;
+  box-shadow: 0 0 3px rgba(185, 147, 99, 0.4);
+}
+
+/* Buttons Row */
+.btn-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+/* Save Button */
+.btn-row .btn {
+  flex: 1;
+  padding: 10px 0;
+  margin-right: 10px;
+  background-color: #d4a762;  /* same brownish-golden theme */
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  color: white;
+  transition: 0.2s;
+}
+
+.btn-row .btn:hover {
+  background-color: #c99954;
+}
+
+/* Cancel Button */
+.cancel-btn {
+  background-color: #b3b3b3 !important;
+  color: white !important;
+  margin-right: 0 !important;
+}
+
+.cancel-btn:hover {
+  background-color: #9a9a9a !important;
+}
