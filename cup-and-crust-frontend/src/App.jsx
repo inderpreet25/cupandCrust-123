@@ -17,6 +17,7 @@ import Menu from "./pages/Menu";
 import Cart from "./pages/Cart";
 import MyOrders from "./pages/MyOrders";
 import Payment from "./pages/Payment";
+import AboutUs from "./pages/AboutUs";  // ⭐ NEW LINE (just added)
 
 // Components
 import Navbar from "./components/Navbar";
@@ -38,12 +39,13 @@ function App() {
     <CartProvider>
       <Navbar />
 
-      {/* This keeps user logged in on refresh */}
+      {/* Keeps user logged in on refresh */}
       <RefreshHandler setIsAuthenticated={setIsAuthenticated} />
 
       <Routes>
-        {/* PUBLIC ROUTE (ONLY HOME) */}
+        {/* PUBLIC ROUTES */}
         <Route path="/" element={<Home />} />
+        <Route path="/about" element={<AboutUs />} />  {/* ⭐ NEW LINE */}
 
         {/* PROTECTED ROUTES */}
         <Route path="/pizza" element={<PrivateRoute element={<Pizza />} />} />
